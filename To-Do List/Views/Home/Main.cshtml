@@ -1,0 +1,269 @@
+@model IEnumerable<To_Do_List.Models.TblTask>
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AuthenticatedLayout.cshtml";
+    var userName = ViewBag.userName;
+}
+
+<!-- Statistics Cards -->
+<div class="stats-grid">
+    <div class="stat-card gradient">
+        <div class="stat-icon">📌</div>
+        <div>
+            <div class="stat-value">@ViewBag.totalTasks</div>
+            <div class="stat-label">Total Tasks</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="color: var(--success);">✓</div>
+        <div>
+            <div class="stat-value">@ViewBag.completedTasks</div>
+            <div class="stat-label">Completed</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="color: var(--warning);">⏳</div>
+        <div>
+            <div class="stat-value">@ViewBag.pendingTasks</div>
+            <div class="stat-label">Pending</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="color: var(--info);">📅</div>
+        <div>
+            <div class="stat-value">@ViewBag.todaysCompletedCount</div>
+            <div class="stat-label">Today's Done</div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid grid-2">
+    <!-- Today's Tasks -->
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <h2 style="font-size: 1.25rem;">📋 Today's Tasks</h2>
+                <small style="color: var(--text-tertiary);">@ViewBag.todaysTasksCount task(s)</small>
+            </div>
+            <span class="badge badge-info">@ViewBag.todaysTasksCount</span>
+        </div>
+
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var task in Model)
+                {
+                    var priorityClass = task.Priority?.ToLower() switch
+                    {
+                        "p1" => "priority-high",
+                        "p2" => "priority-medium",
+                        _ => "priority-low"
+                    };
+
+                    var isCompleted = task.Status?.ToLower() == "completed";
+                
+                    <div class="task-card @priorityClass @(isCompleted ? "completed" : "")">
+                        <div class="task-content">
+                            <div class="task-title">@task.TaskTitle</div>
+                            @if (!string.IsNullOrEmpty(task.TaskDiscription))
+                            {
+                                <div class="task-description">@task.TaskDiscription</div>
+                            }
+                            <div class="task-meta">
+                                <span class="badge @(isCompleted ? "badge-success" : "badge-warning")">
+                                    @task.Status
+                                </span>
+                                @if (!string.IsNullOrEmpty(task.TaskCategoryNavigation?.CategoryName))
+                                {
+                                    <span>🏷️ @task.TaskCategoryNavigation.CategoryName</span>
+                                }
+                                <span>🕐 @task.TaskTime</span>
+                            </div>
+                        </div>
+
+                        <div class="task-actions">
+                            <a href="@Url.Action("editTask", "Home", new { id = task.TaskId, view = "currentView" })" class="task-btn" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form asp-action="deleteTask" asp-controller="Home" method="post" style="display: inline;" onsubmit="return confirm('Delete this task?');">
+                                <input type="hidden" name="id" value="@task.TaskId">
+                                <input type="hidden" name="view" value="currentView">
+                                <button type="submit" class="task-btn danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                            @if (task.Status != "completed")
+                            {
+                            <form asp-action="updateTaskStatusHome" asp-controller="Home" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@task.TaskId">
+                                <button type="submit" class="task-btn">
+                                    <i class="bi bi-check-circle"></i>
+                                 
+                                </button>
+                            </form>
+                            }
+                        </div>
+                    </div>
+                
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <div class="empty-state-icon">✨</div>
+                    <div class="empty-state-title">No tasks for today</div>
+                    <div class="empty-state-text">Perfect! Your day is clear.</div>
+                    <a asp-action="NewTask" asp-controller="Home" class="btn btn-primary btn-sm">Add Your First Task</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Upcoming & Statistics -->
+    <div>
+        <!-- Progress Card -->
+        <div class="card mb-6">
+            <div class="card-header">
+                <h2 style="font-size: 1.25rem;">📊 Progress</h2>
+            </div>
+            <div class="card-body">
+                @{
+                    int total = ViewBag.todaysTasksCount ?? 0;
+                    int completed = ViewBag.todaysCompletedCount ?? 0;
+                    int percentage = total > 0 ? (int)((double)completed / total * 100) : 0;
+                }
+
+                <div style="margin-bottom: var(--spacing-4);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-3);">
+                        <span style="font-weight: 600;">Daily Completion</span>
+                        <span style="font-weight: 700; color: var(--primary);">@percentage%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @percentage%"></div>
+                    </div>
+                    <small style="color: var(--text-tertiary);">
+                        <strong>@completed</strong> of <strong>@total</strong> tasks completed
+                    </small>
+                </div>
+
+                <div style="padding-top: var(--spacing-4); border-top: 1px solid var(--border-color);">
+                    <h4 style="margin-bottom: var(--spacing-3);">Quick Stats</h4>
+                    <div class="grid grid-2" style="gap: var(--spacing-3);">
+                        <div style="background: var(--bg-secondary); padding: var(--spacing-4); border-radius: var(--radius-lg);">
+                            <small class="text-muted">High Priority</small>
+                            <div style="font-size: 1.75rem; font-weight: 700; color: var(--danger);">
+                                @(Model?.Count(t => t.Priority?.ToLower() == "p1") ?? 0)
+                            </div>
+                        </div>
+                        <div style="background: var(--bg-secondary); padding: var(--spacing-4); border-radius: var(--radius-lg);">
+                            <small class="text-muted">Medium Priority</small>
+                            <div style="font-size: 1.75rem; font-weight: 700; color: var(--warning);">
+                                @(Model?.Count(t => t.Priority?.ToLower() == "p2") ?? 0)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Upcoming Tasks -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2 style="font-size: 1.25rem;">🎯 Upcoming (Next 7 Days)</h2>
+                </div>
+                <span class="badge badge-warning">Soon</span>
+            </div>
+
+            <div class="card-body">
+                @{
+                    var upcomingTasks = ViewBag.nextSevenDaysTasks as List<To_Do_List.Models.TblTask>;
+                }
+
+                @if (upcomingTasks != null && upcomingTasks.Any())
+                {
+                    @foreach (var task in upcomingTasks.Take(5))
+                    {
+                      
+                        <div class="task-card priority-medium" style="margin-bottom: var(--spacing-3);">
+                            <div class="task-content">
+                                <div class="task-title">@task.TaskTitle</div>
+                                <div class="task-meta">
+                                    <span>📅 @task.TaskDate?.ToString("ddd, MMM dd")</span>
+                                </div>
+                            </div>
+                            @if (task.Status != "Completed" || task.Status != "completed" && task.Status != null)
+                            {
+                            <form asp-action="updateTaskStatusHome" asp-controller="Home" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@task.TaskId">
+                                <button type="submit" class="task-btn">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                            </form>
+                            }
+                        </div>
+                      
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🌟</div>
+                        <div class="empty-state-title">No upcoming tasks</div>
+                        <div class="empty-state-text">Great! Your schedule is clear.</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Section -->
+@{
+    var categories = ViewBag.categories as List<To_Do_List.Models.TblCategory>;
+    var totalTasksList = ViewBag.totalTasksList as List<To_Do_List.Models.TblTask>;
+}
+
+@if (categories != null && categories.Any())
+{
+    <div class="card mt-8">
+        <div class="card-header">
+            <div>
+                <h2 style="font-size: 1.25rem;">🏷️ Categories</h2>
+                <small style="color: var(--text-tertiary);">@categories.Count() total</small>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="grid grid-3">
+                @foreach (var category in categories)
+                {
+                    int taskCount = totalTasksList?.Count(t => t.TaskCategory == category.CategoryId) ?? 0;
+                    if (taskCount == 0) continue;
+
+                    string icon = category.CategoryName?.ToLower() switch
+                    {
+                        "work" => "💼",
+                        "study" => "📚",
+                        "home" => "🏠",
+                        _ => "🏷️"
+                    };
+
+                    <div style="background: var(--bg-secondary); padding: var(--spacing-6); border-radius: var(--radius-lg); text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: var(--spacing-3);">@icon</div>
+                        <h3 style="margin-bottom: var(--spacing-2); font-size: 1rem;">@category.CategoryName</h3>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">@taskCount</div>
+                        <small class="text-muted">@(taskCount == 1 ? "task" : "tasks")</small>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

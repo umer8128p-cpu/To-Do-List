@@ -1,0 +1,372 @@
+@{
+    ViewData["Title"] = "Dashboard - TaskFlow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <!-- Welcome Section -->
+    <div class="dashboard-welcome">
+        <h1>Welcome back, User! 👋</h1>
+        <p>You have <strong>3 tasks</strong> due today. Stay focused and productive!</p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="dashboard-stats-grid">
+        <div class="stat-card gradient">
+            <div class="stat-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <div class="stat-value">28</div>
+            <div class="stat-label">Total Tasks</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-lightning"></i>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Today's Tasks</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">This Week</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-check2-square"></i>
+            </div>
+            <div class="stat-value">92</div>
+            <div class="stat-label">Completed</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="dashboard-grid">
+        <!-- Left Column: Tasks -->
+        <div class="tasks-column">
+            <!-- Quick Links -->
+            <div class="dashboard-section-title">
+                <i class="bi bi-lightning-fill"></i>
+                Quick Access
+            </div>
+            <div class="quick-links">
+                <a href="/" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="quick-link-label">Today</div>
+                </a>
+                <a href="/" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-calendar"></i>
+                    </div>
+                    <div class="quick-link-label">Week</div>
+                </a>
+                <a href="/" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </div>
+                    <div class="quick-link-label">Overdue</div>
+                </a>
+                <a href="/" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-check2-all"></i>
+                    </div>
+                    <div class="quick-link-label">Completed</div>
+                </a>
+            </div>
+
+            <!-- My Tasks -->
+            <div class="dashboard-section-title" style="margin-top: var(--spacing-2xl);">
+                <i class="bi bi-check2-square"></i>
+                My Tasks
+            </div>
+            <div class="section-card">
+                <div class="section-card-header">
+                    <div class="section-card-title">Active Tasks</div>
+                    <a href="/" class="view-all-link">View All →</a>
+                </div>
+
+                <!-- Task List -->
+                <ul class="task-list">
+                    <li class="task-card">
+                        <input type="checkbox" class="task-checkbox" />
+                        <div class="task-content">
+                            <div class="task-title">Design new dashboard interface</div>
+                            <div class="task-description">Create mockups and wireframes for the updated dashboard</div>
+                            <div class="task-meta">
+                                <span class="task-meta-item">
+                                    <i class="bi bi-calendar"></i>
+                                    Tomorrow
+                                </span>
+                                <span class="task-priority high">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    High
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="bi bi-tag"></i>
+                                    Work
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="task-action-btn delete" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="task-card">
+                        <input type="checkbox" class="task-checkbox" />
+                        <div class="task-content">
+                            <div class="task-title">Review project documentation</div>
+                            <div class="task-description">Go through the latest API documentation and update notes</div>
+                            <div class="task-meta">
+                                <span class="task-meta-item">
+                                    <i class="bi bi-calendar"></i>
+                                    Today
+                                </span>
+                                <span class="task-priority medium">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    Medium
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="bi bi-tag"></i>
+                                    Development
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="task-action-btn delete" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="task-card">
+                        <input type="checkbox" class="task-checkbox" />
+                        <div class="task-content">
+                            <div class="task-title">Prepare client presentation</div>
+                            <div class="task-description">Compile slides and talking points for Friday meeting</div>
+                            <div class="task-meta">
+                                <span class="task-meta-item">
+                                    <i class="bi bi-calendar"></i>
+                                    In 3 days
+                                </span>
+                                <span class="task-priority low">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    Low
+                                </span>
+                                <span class="task-meta-item">
+                                    <i class="bi bi-tag"></i>
+                                    Presentation
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-action-btn" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="task-action-btn delete" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="actions-row">
+                    <a href="/" class="btn btn-outline">View All Tasks</a>
+                    <a href="/" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i>
+                        New Task
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Sidebar -->
+        <div class="sidebar-column">
+            <!-- Calendar Widget -->
+            <div class="section-card">
+                <div class="section-card-header">
+                    <div class="section-card-title">Calendar</div>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <div class="calendar-title">January 2026</div>
+                        <button class="calendar-nav-btn">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div class="calendar-weekday">S</div>
+                        <div class="calendar-weekday">M</div>
+                        <div class="calendar-weekday">T</div>
+                        <div class="calendar-weekday">W</div>
+                        <div class="calendar-weekday">T</div>
+                        <div class="calendar-weekday">F</div>
+                        <div class="calendar-weekday">S</div>
+                    </div>
+                    <div class="calendar-days">
+                        <div class="calendar-day other-month">29</div>
+                        <div class="calendar-day other-month">30</div>
+                        <div class="calendar-day">1</div>
+                        <div class="calendar-day">2</div>
+                        <div class="calendar-day">3</div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5</div>
+                        <div class="calendar-day">6</div>
+                        <div class="calendar-day">7</div>
+                        <div class="calendar-day">8</div>
+                        <div class="calendar-day">9</div>
+                        <div class="calendar-day today">10</div>
+                        <div class="calendar-day">11</div>
+                        <div class="calendar-day">12</div>
+                        <div class="calendar-day">13</div>
+                        <div class="calendar-day">14</div>
+                        <div class="calendar-day">15</div>
+                        <div class="calendar-day">16</div>
+                        <div class="calendar-day">17</div>
+                        <div class="calendar-day">18</div>
+                        <div class="calendar-day">19</div>
+                        <div class="calendar-day">20</div>
+                        <div class="calendar-day">21</div>
+                        <div class="calendar-day">22</div>
+                        <div class="calendar-day">23</div>
+                        <div class="calendar-day">24</div>
+                        <div class="calendar-day selected">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+                        <div class="calendar-day">30</div>
+                        <div class="calendar-day">31</div>
+                        <div class="calendar-day other-month">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Widget -->
+            <div class="progress-widget">
+                <div class="section-card-title" style="margin-bottom: var(--spacing-lg); font-size: var(--font-size-lg);">
+                    <i class="bi bi-graph-up"></i>
+                    Your Progress
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Today's Tasks</span>
+                        <span>2/3</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 66.67%;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>This Week</span>
+                        <span>4/5</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 80%;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>This Month</span>
+                        <span>20/28</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 71.43%;"></div>
+                    </div>
+                </div>
+
+                <div class="progress-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-success);"></div>
+                        <span>Completed</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-border);"></div>
+                        <span>Remaining</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="section-card">
+                <div class="section-card-header">
+                    <div class="section-card-title">This Week</div>
+                </div>
+                <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                    <div class="list-item-mini">
+                        <span class="list-item-indicator" style="background-color: var(--color-danger);"></span>
+                        <span><strong>Monday</strong> - 3 tasks due</span>
+                    </div>
+                    <div class="list-item-mini">
+                        <span class="list-item-indicator" style="background-color: var(--color-warning);"></span>
+                        <span><strong>Wednesday</strong> - 2 tasks due</span>
+                    </div>
+                    <div class="list-item-mini">
+                        <span class="list-item-indicator" style="background-color: var(--color-success);"></span>
+                        <span><strong>Friday</strong> - 1 task due</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="dashboard-section-title">
+        <i class="bi bi-tag-fill"></i>
+        Categories
+    </div>
+    <div class="quick-links" style="margin-bottom: var(--spacing-2xl);">
+        <div class="quick-link-card" style="border-left: 3px solid #6366f1;">
+            <div class="quick-link-icon" style="color: #6366f1;">
+                <i class="bi bi-folder"></i>
+            </div>
+            <div class="quick-link-label">Work</div>
+            <small style="color: var(--color-text-tertiary);">12 tasks</small>
+        </div>
+        <div class="quick-link-card" style="border-left: 3px solid #10b981;">
+            <div class="quick-link-icon" style="color: #10b981;">
+                <i class="bi bi-folder"></i>
+            </div>
+            <div class="quick-link-label">Personal</div>
+            <small style="color: var(--color-text-tertiary);">8 tasks</small>
+        </div>
+        <div class="quick-link-card" style="border-left: 3px solid #f59e0b;">
+            <div class="quick-link-icon" style="color: #f59e0b;">
+                <i class="bi bi-folder"></i>
+            </div>
+            <div class="quick-link-label">Shopping</div>
+            <small style="color: var(--color-text-tertiary);">4 tasks</small>
+        </div>
+        <div class="quick-link-card" style="border-left: 3px solid #3b82f6;">
+            <div class="quick-link-icon" style="color: #3b82f6;">
+                <i class="bi bi-folder"></i>
+            </div>
+            <div class="quick-link-label">Ideas</div>
+            <small style="color: var(--color-text-tertiary);">6 tasks</small>
+        </div>
+    </div>
+</div>

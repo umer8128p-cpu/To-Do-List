@@ -1,0 +1,40 @@
+﻿@model To_Do_List.Models.TblTeam
+
+@{
+    ViewData["Title"] = "newTeam";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+
+<h1>newTeam</h1>
+
+<h4>TblTeam</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="newTeam">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TeamName" class="control-label"></label>
+                <input asp-for="TeamName" class="form-control" />
+                <span asp-validation-for="TeamName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MembersNum" class="control-label"></label>
+                <input asp-for="MembersNum" class="form-control" />
+                <span asp-validation-for="MembersNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TeamAdmin" class="control-label"></label>
+                <select asp-for="TeamAdmin" class ="form-control" asp-items="ViewBag.TeamAdmin"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

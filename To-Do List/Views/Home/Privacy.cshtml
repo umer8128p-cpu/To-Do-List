@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Privacy Policy";
+    Layout = User.Identity?.IsAuthenticated == true ? "~/Views/Shared/_AuthenticatedLayout.cshtml" : "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<div style="max-width: 900px; margin: 0 auto; padding: var(--spacing-8);">
+    <div class="card">
+        <div class="card-header">
+            <h1 style="font-size: 2rem;">🔒 Privacy Policy</h1>
+        </div>
+
+        <div class="card-body">
+            <div style="line-height: 1.8; color: var(--text-secondary);">
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">1. Information We Collect</h2>
+                <p>We collect information you provide when creating an account and managing your tasks, including:</p>
+                <ul>
+                    <li>Email address and password</li>
+                    <li>User profile information</li>
+                    <li>Task details and descriptions</li>
+                    <li>Task categories and dates</li>
+                </ul>
+
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">2. How We Use Your Information</h2>
+                <p>Your information is used to:</p>
+                <ul>
+                    <li>Provide and improve the TaskFlow service</li>
+                    <li>Authenticate your account</li>
+                    <li>Manage your tasks and categories</li>
+                    <li>Communicate service updates</li>
+                </ul>
+
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">3. Data Security</h2>
+                <p>We implement appropriate technical and organizational measures to protect your data against unauthorized access, alteration, disclosure, or destruction.</p>
+
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">4. Data Retention</h2>
+                <p>Your task data is retained as long as your account is active. You can request data deletion at any time by contacting us.</p>
+
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">5. Third-Party Services</h2>
+                <p>We do not share your personal data with third parties except as required by law.</p>
+
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">6. Changes to This Policy</h2>
+                <p>We may update this privacy policy from time to time. We will notify you of any significant changes via email or through the service.</p>
+
+                <h2 style="margin-top: var(--spacing-8); margin-bottom: var(--spacing-4);">7. Contact Us</h2>
+                <p>If you have any questions about this privacy policy, please contact us at support@taskflow.com</p>
+
+                <div style="margin-top: var(--spacing-12); padding: var(--spacing-6); background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <p style="margin: 0; color: var(--text-tertiary); font-size: 0.875rem;">
+                        Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: var(--spacing-8);">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-action="Main" asp-controller="Home" class="btn btn-primary">Back to Dashboard</a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Back to Home</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

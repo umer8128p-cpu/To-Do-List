@@ -1,0 +1,103 @@
+@model To_Do_List.Models.TblTask
+
+@{
+    ViewData["Title"] = "Add New Task";
+    Layout = "~/Views/Shared/_AuthenticatedLayout.cshtml";
+}
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <div class="card-header">
+            <h1 style="font-size: 1.5rem;">➕ Create New Task</h1>
+        </div>
+
+        <div class="card-body">
+            <!-- Error Alert -->
+            @if (TempData["invalidTask"] != null)
+            {
+                <div class="alert alert-danger mb-4">
+                    <i class="bi bi-exclamation-circle alert-icon"></i>
+                    <div>
+                        <strong>Invalid Task</strong>
+                        <p style="margin: 0;">@TempData["invalidTask"]</p>
+                    </div>
+                </div>
+            }
+
+            <!-- Form -->
+            <form asp-action="NewTask" asp-controller="Home" method="post">
+                <!-- Task Title -->
+                <div class="form-group">
+                    <label class="form-label" for="TaskTitle">Task Title *</label>
+                    <input type="text" class="form-control" id="TaskTitle" name="TaskTitle" placeholder="Enter task title" required>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label class="form-label" for="TaskDiscription">Description</label>
+                    <textarea class="form-control" id="TaskDiscription" name="TaskDiscription" placeholder="Enter task description..." rows="4"></textarea>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label class="form-label" for="TaskCategory">Category</label>
+                    @{
+                        var categories = ViewBag.Categories as SelectList;
+                    }
+                    <select class="form-control form-select" id="TaskCategory" name="TaskCategory">
+                        <option value="">Select a category...</option>
+                        @if (categories != null)
+                        {
+                            foreach (var cat in categories)
+                            {
+                                <option value="@cat.Value">@cat.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Row: Date & Time -->
+                <div class="grid grid-2">
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label class="form-label" for="TaskDate">Date *</label>
+                        <input type="date" class="form-control" id="TaskDate" name="TaskDate" required min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                    </div>
+
+                    <!-- Time -->
+                    <div class="form-group">
+                        <label class="form-label" for="TaskTime">Time *</label>
+                        <input type="time" class="form-control" id="TaskTime" name="TaskTime" required>
+                    </div>
+                </div>
+
+                <!-- Priority -->
+                <div class="form-group">
+                    <label class="form-label" for="Priority">Priority *</label>
+                    <select class="form-control form-select" id="Priority" name="Priority" required>
+                        <option value="">Select priority...</option>
+                        <option value="P1">🔴 High Priority</option>
+                        <option value="P2" selected>🟠 Medium Priority</option>
+                        <option value="P3">🔵 Low Priority</option>
+                        <option value="P4">🟡 Minimal Priority</option>
+                    </select>
+                </div>
+
+                <!-- Status (Will use default from controller) -->
+                <input type="hidden" name="Status" value="pending">
+
+                <!-- Buttons -->
+                <div style="display: flex; gap: var(--spacing-4); margin-top: var(--spacing-8);">
+                    <button type="submit" class="btn btn-primary flex-1">
+                        <i class="bi bi-check-circle"></i>
+                        Save Task
+                    </button>
+                    <a asp-action="Main" asp-controller="Home" class="btn btn-secondary flex-1">
+                        <i class="bi bi-x-circle"></i>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

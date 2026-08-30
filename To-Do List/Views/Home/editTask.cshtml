@@ -1,0 +1,118 @@
+@model To_Do_List.Models.TblTask
+
+@{
+    ViewData["Title"] = "Edit Task";
+    Layout = "~/Views/Shared/_AuthenticatedLayout.cshtml";
+}
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <div class="card-header">
+            <h1 style="font-size: 1.5rem;">✏️ Edit Task</h1>
+        </div>
+
+        <div class="card-body">
+            <!-- Form -->
+            <form asp-action="editTask" asp-controller="Home" method="post">
+                <!-- Hidden ID -->
+                <input type="hidden" name="TaskId" value="@Model.TaskId">
+                <input type="hidden" name="view" value="@ViewBag.viewName">
+
+                <!-- Task Title -->
+                <div class="form-group">
+                    <label class="form-label" for="TaskTitle">Task Title *</label>
+                    <input type="text" class="form-control" id="TaskTitle" name="TaskTitle" value="@Model.TaskTitle" required>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label class="form-label" for="TaskDiscription">Description</label>
+                    <textarea class="form-control" id="TaskDiscription" name="TaskDiscription" rows="4">@Model.TaskDiscription</textarea>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label class="form-label" for="TaskCategory">Category</label>
+                    @{
+                        var categories = ViewBag.Categories as SelectList;
+                    }
+                    <select class="form-control form-select" id="TaskCategory" name="TaskCategory">
+                        <option value="">Select a category...</option>
+                        @if (categories != null)
+                        {
+                            foreach (var cat in categories)
+                            {
+                                var isSelected = cat.Value?.ToString() == Model.TaskCategory?.ToString();
+                                var selectedAttr = isSelected ? " selected" : "";
+                                @Html.Raw($"<option value=\"{cat.Value}\"{selectedAttr}>{cat.Text}</option>")
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Row: Date & Time -->
+                <div class="grid grid-2">
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label class="form-label" for="TaskDate">Date *</label>
+                        <input type="date" class="form-control" id="TaskDate" name="TaskDate" value="@Model.TaskDate?.ToString("yyyy-MM-dd")" required>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="form-group">
+                        <label class="form-label" for="TaskTime">Time *</label>
+                        <input type="time" class="form-control" id="TaskTime" name="TaskTime" value="@Model.TaskTime.ToString("HH:mm")" required>
+                    </div>
+                </div>
+
+                <!-- Priority -->
+                <div class="form-group">
+                    <label class="form-label" for="Priority">Priority *</label>
+                    <select class="form-control form-select" id="Priority" name="Priority" required>
+                        @{
+                            var priorities = new[] { "P1", "P2", "P3", "P4" };
+                            var priorityLabels = new[] { "🔴 High Priority", "🟠 Medium Priority", "🔵 Low Priority", "🟡 Minimal Priority" };
+                        }
+                        @for (int i = 0; i < priorities.Length; i++)
+                        {
+                            var priority = priorities[i];
+                            var isSelected = Model.Priority == priority;
+                            var selectedAttr = isSelected ? " selected" : "";
+                            @Html.Raw($"<option value=\"{priority}\"{selectedAttr}>{priorityLabels[i]}</option>")
+                        }
+                    </select>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label class="form-label" for="Status">Status *</label>
+                    <select class="form-control form-select" id="Status" name="Status" required>
+                        @{
+                            var statuses = new[] { "pending", "completed" };
+                            var statusLabels = new[] { "⏳ Pending", "✓ Completed" };
+                        }
+                        @for (int i = 0; i < statuses.Length; i++)
+                        {
+                            var status = statuses[i];
+                            var isSelected = Model.Status == status;
+                            var selectedAttr = isSelected ? " selected" : "";
+                            @Html.Raw($"<option value=\"{status}\"{selectedAttr}>{statusLabels[i]}</option>")
+                        }
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div style="display: flex; gap: var(--spacing-4); margin-top: var(--spacing-8);">
+                    <button type="submit" class="btn btn-primary flex-1">
+                        <i class="bi bi-check-circle"></i>
+                        Save Changes
+                    </button>
+                    <a href="javascript:history.back();" class="btn btn-secondary flex-1">
+                        <i class="bi bi-x-circle"></i>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

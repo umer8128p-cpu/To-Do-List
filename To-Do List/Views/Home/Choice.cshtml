@@ -1,0 +1,69 @@
+@{
+    ViewData["Title"] = "Choose Your Setup";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--spacing-8);">
+    <div style="width: 100%; max-width: 900px;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: var(--spacing-12);">
+            <h1 style="font-size: 2rem; margin-bottom: var(--spacing-4);">How do you want to use TaskFlow?</h1>
+            <p class="text-muted" style="font-size: 1.125rem;">Choose an option to get started</p>
+        </div>
+
+        <!-- Error Alert -->
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger mb-6">
+                <i class="bi bi-exclamation-circle alert-icon"></i>
+                <div>
+                    <strong>Error</strong>
+                    <p style="margin: 0;">@ViewBag.Error</p>
+                </div>
+            </div>
+        }
+
+        <!-- Cards Grid -->
+        <div class="grid grid-3">
+            <!-- Personal -->
+            <form asp-action="Choice" asp-controller="Home" method="post">
+                <input type="hidden" name="usageType" value="personal">
+                <button type="submit" class="card" style="border: none; cursor: pointer; text-align: center; height: 100%; padding: var(--spacing-8); transition: all var(--transition-fast); background: var(--bg-primary);">
+                    <div style="font-size: 3rem; margin-bottom: var(--spacing-4);">👤</div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: var(--spacing-3); color: var(--text-primary);">Personal</h2>
+                    <p style="color: var(--text-secondary);">Manage your personal tasks and stay organized.</p>
+                    <div style="margin-top: var(--spacing-6); color: var(--primary); font-weight: 600;">Choose This →</div>
+                </button>
+            </form>
+
+            <!-- Team -->
+            <form asp-action="Choice" asp-controller="Home" method="post">
+                <input type="hidden" name="usageType" value="team">
+                <button type="submit" class="card" style="border: none; cursor: pointer; text-align: center; height: 100%; padding: var(--spacing-8); transition: all var(--transition-fast); background: var(--bg-primary);">
+                    <div style="font-size: 3rem; margin-bottom: var(--spacing-4);">👥</div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: var(--spacing-3); color: var(--text-primary);">Team</h2>
+                    <p style="color: var(--text-secondary);">Organize and collaborate with your team members.</p>
+                    <div style="margin-top: var(--spacing-6); color: var(--primary); font-weight: 600;">Choose This →</div>
+                </button>
+            </form>
+
+            <!-- Both -->
+            <form asp-action="Choice" asp-controller="Home" method="post">
+                <input type="hidden" name="usageType" value="both">
+                <button type="submit" class="card" style="border: none; cursor: pointer; text-align: center; height: 100%; padding: var(--spacing-8); transition: all var(--transition-fast); background: var(--primary-light); border: 2px solid var(--primary);">
+                    <div style="font-size: 3rem; margin-bottom: var(--spacing-4);">🚀</div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: var(--spacing-3); color: var(--primary);">Personal + Team</h2>
+                    <p style="color: var(--text-secondary);">Get the full power with both personal and team features.</p>
+                    <div style="margin-top: var(--spacing-6); color: var(--primary); font-weight: 600;">Recommended →</div>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+</style>

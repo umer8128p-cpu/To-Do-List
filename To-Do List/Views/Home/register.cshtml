@@ -1,0 +1,99 @@
+@model To_Do_List.Models.TblUser
+
+@{
+    ViewData["Title"] = "Create Account";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--spacing-8);">
+    <div style="width: 100%; max-width: 450px;">
+        <!-- Card -->
+        <div class="card">
+            <div class="card-body">
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: var(--spacing-8);">
+                    <div style="font-size: 2.5rem; margin-bottom: var(--spacing-4);">
+                        <i class="bi bi-person-plus-fill" style="color: var(--primary);"></i>
+                    </div>
+                    <h1 style="font-size: 1.75rem; margin-bottom: var(--spacing-2);">Create Your Account</h1>
+                    <p class="text-muted">Start managing your tasks today</p>
+                </div>
+
+                <!-- Email Error Alert -->
+                @if (!string.IsNullOrEmpty(ViewBag.emailError))
+                {
+                    <div class="alert alert-danger mb-4">
+                        <i class="bi bi-exclamation-circle alert-icon"></i>
+                        <div>
+                            <strong>Email Error</strong>
+                            <p style="margin: 0;">@ViewBag.emailError</p>
+                        </div>
+                    </div>
+                }
+
+                <!-- Password Error Alert -->
+                @if (!string.IsNullOrEmpty(ViewBag.errorPassword))
+                {
+                    <div class="alert alert-danger mb-4">
+                        <i class="bi bi-exclamation-circle alert-icon"></i>
+                        <div>
+                            <strong>Password Mismatch</strong>
+                            <p style="margin: 0;">@ViewBag.errorPassword</p>
+                        </div>
+                    </div>
+                }
+
+                <!-- Form -->
+                <form asp-action="register" method="post">
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="UserName">Full Name</label>
+                        <input type="text" class="form-control" id="UserName" name="UserName" placeholder="John Doe" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label" for="UserEmail">Email Address</label>
+                        <input type="email" class="form-control" id="UserEmail" name="UserEmail" placeholder="you@example.com" required>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="UserPassword">Password</label>
+                        <input type="password" class="form-control" id="UserPassword" name="UserPassword" placeholder="••••••••" required>
+                        <small class="form-text">Use at least 8 characters</small>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="ConfirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100 mt-4">
+                        <i class="bi bi-check-circle"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div style="text-align: center; margin: var(--spacing-6) 0; color: var(--text-tertiary);">
+                    <small>Already have an account?</small>
+                </div>
+
+                <!-- Login Link -->
+                <a asp-action="login" asp-controller="Home" class="btn btn-secondary w-100">
+                    Sign In Instead
+                </a>
+
+                <!-- Back to Home -->
+                <div style="text-align: center; margin-top: var(--spacing-6);">
+                    <a asp-action="Index" asp-controller="Home" class="text-muted">
+                        <i class="bi bi-arrow-left"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

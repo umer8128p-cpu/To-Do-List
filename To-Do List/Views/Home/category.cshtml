@@ -1,0 +1,48 @@
+@model To_Do_List.Models.TblCategory
+
+@{
+    ViewData["Title"] = "Create Category";
+    Layout = "~/Views/Shared/_AuthenticatedLayout.cshtml";
+}
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <div class="card-header">
+            <h1 style="font-size: 1.5rem;">🏷️ Create New Category</h1>
+        </div>
+
+        <div class="card-body">
+            <!-- Form -->
+            <form asp-action="category" asp-controller="Home" method="post">
+                <!-- Category Name -->
+                <div class="form-group">
+                    <label class="form-label" for="CategoryName">Category Name *</label>
+                    <input type="text" class="form-control" id="CategoryName" name="CategoryName" placeholder="e.g., Work, Personal, Study" required>
+                    <small class="form-text">Give your category a descriptive name</small>
+                </div>
+
+                <!-- Buttons -->
+                <div style="display: flex; gap: var(--spacing-4); margin-top: var(--spacing-8);">
+                    <button type="submit" class="btn btn-primary flex-1">
+                        <i class="bi bi-check-circle"></i>
+                        Create Category
+                    </button>
+                    <a asp-action="Main" asp-controller="Home" class="btn btn-secondary flex-1">
+                        <i class="bi bi-x-circle"></i>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+
+            <div style="margin-top: var(--spacing-8); padding-top: var(--spacing-8); border-top: 1px solid var(--border-color);">
+                <h3 style="margin-bottom: var(--spacing-4); font-size: 1rem;">💡 Tips</h3>
+                <ul style="margin: 0; padding-left: var(--spacing-6); color: var(--text-secondary);">
+                    <li>Use clear category names like "Work", "Personal", "Study"</li>
+                    <li>You can create as many categories as needed</li>
+                    <li>Assign tasks to categories to stay organized</li>
+                    <li>Filter tasks by category for easier management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

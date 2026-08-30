@@ -1,0 +1,132 @@
+@model IEnumerable<To_Do_List.Models.TblTask>
+
+@{
+    ViewData["Title"] = "Today's Tasks";
+    Layout = "~/Views/Shared/_AuthenticatedLayout.cshtml";
+}
+
+<!-- Filters -->
+<div class="card mb-6">
+    <div class="card-header">
+        <h2 style="font-size: 1rem;">🔍 Filters</h2>
+    </div>
+    <div class="card-body">
+        <form method="get" class="grid grid-2" style="gap: var(--spacing-4);">
+            <!-- Status Filter -->
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select class="form-control form-select" name="status">
+                    @{
+                        var statuses = new[] { "", "pending", "completed", "all" };
+                        var statusLabels = new[] { "All Tasks", "⏳ Pending", "✓ Completed", "Both" };
+                    }
+                    @for (int i = 0; i < statuses.Length; i++)
+                    {
+                        var status = statuses[i];
+                        var isSelected = ViewBag.SelectedStatus == status;
+                        var selectedAttr = isSelected ? " selected" : "";
+                        @Html.Raw($"<option value=\"{status}\"{selectedAttr}>{statusLabels[i]}</option>")
+                    }
+                </select>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-control form-select" name="category">
+                    <option value="0">All Categories</option>
+                    @{
+                        var categories = ViewBag.categories as List<To_Do_List.Models.TblCategory>;
+                        if (categories != null)
+                        {
+                            foreach (var cat in categories)
+                            {
+                                var isSelected = ViewBag.SelectedCategory == cat.CategoryId;
+                                var selectedAttr = isSelected ? " selected" : "";
+                                @Html.Raw($"<option value=\"{cat.CategoryId}\"{selectedAttr}>{cat.CategoryName}</option>")
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">
+                <i class="bi bi-search"></i> Filter
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Tasks -->
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h1 style="font-size: 1.5rem;">📋 Today's Tasks</h1>
+            <small style="color: var(--text-tertiary);">@Model.Count() task(s)</small>
+        </div>
+        <span class="badge badge-info">@Model.Count()</span>
+    </div>
+
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            @foreach (var task in Model)
+            {
+                var priorityClass = task.Priority?.ToLower() switch
+                {
+                    "p1" => "priority-high",
+                    "p2" => "priority-medium",
+                    _ => "priority-low"
+                };
+
+                var isCompleted = task.Status?.ToLower() == "completed";
+
+                <div class="task-card @priorityClass @(isCompleted ? "completed" : "")">
+                    <div class="task-content">
+                        <div class="task-title">@task.TaskTitle</div>
+                        @if (!string.IsNullOrEmpty(task.TaskDiscription))
+                        {
+                            <div class="task-description">@task.TaskDiscription</div>
+                        }
+                        <div class="task-meta">
+                            <span class="badge @(isCompleted ? "badge-success" : "badge-warning")">@task.Status</span>
+                            @if (!string.IsNullOrEmpty(task.TaskCategoryNavigation?.CategoryName))
+                            {
+                                <span>🏷️ @task.TaskCategoryNavigation.CategoryName</span>
+                            }
+                            <span>🕐 @task.TaskTime</span>
+                        </div>
+                    </div>
+
+                    <div class="task-actions">
+                        <form asp-action="updateTaskStatus" asp-controller="Home" method="post" style="display: inline;">
+                            <input type="hidden" name="id" value="@task.TaskId">
+                            <button type="submit" class="task-btn" title="@(isCompleted ? "Mark Pending" : "Mark Complete")">
+                                <i class="bi bi-check-circle"></i>
+                            </button>
+                        </form>
+                        <a href="@Url.Action("editTask", "Home", new { id = task.TaskId, view = "todayView" })" class="task-btn" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form asp-action="deleteTask" asp-controller="Home" method="post" style="display: inline;" onsubmit="return confirm('Delete this task?');">
+                            <input type="hidden" name="id" value="@task.TaskId">
+                            <input type="hidden" name="view" value="todayView">
+                            <button type="submit" class="task-btn danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">✨</div>
+                <div class="empty-state-title">No tasks for today</div>
+                <div class="empty-state-text">Perfect! Your day is clear.</div>
+                <a asp-action="NewTask" asp-controller="Home" class="btn btn-primary btn-sm mt-4">➕ Add New Task</a>
+            </div>
+        }
+    </div>
+</div>
